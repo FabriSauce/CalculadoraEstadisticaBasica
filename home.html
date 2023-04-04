@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>Calculadora estadística</title>
+  </head>
+  <body>
+    <h1>Calculadora estadística</h1>
+    <p>Introduce los datos separados por comas:</p>
+    <input type="text" id="input-data">
+    <button onclick="calcular()">Calcular</button>
+    <div id="resultado"></div>
+    <script>
+      function calcular() {
+        var data = document.getElementById("input-data").value.split(",");
+        var n = data.length;
+        var sum = 0;
+        for (var i = 0; i < n; i++) {
+          sum += Number(data[i]);
+        }
+        var promedio = sum / n;
+        data.sort(function(a, b){return a-b});
+        var mediana = 0;
+        if (n % 2 == 0) {
+          mediana = (Number(data[n/2-1]) + Number(data[n/2])) / 2;
+        } else {
+          mediana = Number(data[Math.floor(n/2)]);
+        }
+        var moda = 0;
+        var count = {};
+        for (var i = 0; i < n; i++) {
+          if (count[data[i]]) {
+            count[data[i]]++;
+          } else {
+            count[data[i]] = 1;
+          }
+        }
+        var maxCount = 0;
+        for (var value in count) {
+          if (count[value] > maxCount) {
+            moda = Number(value);
+            maxCount = count[value];
+          }
+        }
+        var varianza = 0;
+        for (var i = 0; i < n; i++) {
+          varianza += Math.pow(Number(data[i]) - promedio, 2);
+        }
+        varianza /= n;
+        var desviacion = Math.sqrt(varianza);
+        var resultado = "Promedio: " + promedio + "<br>Mediana: " + mediana + "<br>Moda: " + moda + "<br>Varianza: " + varianza + "<br>Desviación estándar: " + desviacion;
+        document.getElementById("resultado").innerHTML = resultado;
+      }
+    </script>
+  </body>
+</html>
